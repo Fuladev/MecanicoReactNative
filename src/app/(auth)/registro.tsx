@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Alert } from 'react-native';
+import { notify } from '../../dialogs';
 import { AddressForm, emptyAddress, validateAddress, type AddressErrors, type AddressFormValue } from '../../components/AddressForm';
 import { AppText, Button, ErrorText, Screen, TextField } from '../../components/ui';
 import { buildAddress } from '../../domain/address';
@@ -45,7 +45,7 @@ export default function Registro() {
         { name, apel, phone: normalizePhone(phone), mail: user.email ?? mail },
         buildAddress(address),
       );
-      Alert.alert('¡Bienvenido!', 'Te enviamos un correo para verificar tu cuenta.');
+      notify('¡Bienvenido!', 'Te enviamos un correo para verificar tu cuenta.');
     } catch (err) {
       setError(authErrorMessage(err));
       setLoading(false);

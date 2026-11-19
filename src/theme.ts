@@ -12,6 +12,15 @@ export const colors = {
   warning: '#B26A00',
 };
 
+/** Colores de estado de la app iOS (stategray / stateyellow / stategreen), con texto legible sobre blanco. */
+export const stateColors = {
+  enviado: { dot: '#B8BDB7', text: '#6E736D', bg: '#F0F1F0' },
+  en_curso: { dot: '#FFD131', text: '#8A6A00', bg: '#FFF6D6' },
+  completado: { dot: '#00CA33', text: '#0B7A2A', bg: '#DDF7E4' },
+  cancelado: { dot: '#8A8A93', text: '#8A8A93', bg: '#EFEFF2' },
+  otro: { dot: '#8A8A93', text: '#53535B', bg: '#EFEFF2' },
+};
+
 export const fonts = {
   regular: 'Montserrat_400Regular',
   medium: 'Montserrat_500Medium',

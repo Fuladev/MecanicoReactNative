@@ -80,6 +80,11 @@ export async function addAddress(uid: string, address: Address) {
   return r.key!;
 }
 
+/** Reemplaza la dirección completa (sin `casa` si quedó vacía), como "Editar" en la app iOS. */
+export async function updateAddress(uid: string, id: string, address: Address) {
+  await set(ref(db, `Users/${uid}/Direcciones/${id}`), address);
+}
+
 export async function deleteAddress(uid: string, id: string) {
   await remove(ref(db, `Users/${uid}/Direcciones/${id}`));
 }

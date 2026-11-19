@@ -8,6 +8,13 @@
  *   Users/{uid}/Direcciones/{dirId}   Address
  *   Pedidos/{pedidoId}                Pedido  (cola global que leen los proveedores)
  *   Pedido/{uid}/{pedidoId}           Pedido  (historial del cliente, MISMO pedidoId)
+ *   Pedido/{uid}/{pedidoId}/Factura   Factura (la escribe la app de proveedores al terminar)
+ *
+ * Ciclo de vida del campo `state` (contrato de la app de proveedores iOS, Mecanico Service):
+ *   "Processing"  el cliente crea el pedido; está en la cola Pedidos/.
+ *   "inProcess"   un técnico lo toma: se borra de Pedidos/, se copia a Mecanicos/{mecId}/Pedidos/ y se
+ *                 actualiza Pedido/{uid}/{pedidoId} (mecanico queda en "").
+ *   "Complete"    el técnico cobra: escribe Factura y state en Mecanicos/… y en Pedido/{uid}/{pedidoId}.
  */
 
 export type UserProfile = {
@@ -34,6 +41,8 @@ export type AddressWithId = Address & { id: string };
 
 /** Valores legacy que escribe hoy la app y que la app de proveedores espera. */
 export const LEGACY_STATE_NUEVO = 'Processing';
+export const LEGACY_STATE_EN_CURSO = 'inProcess';
+export const LEGACY_STATE_COMPLETO = 'Complete';
 export const LEGACY_SIN_MECANICO = 'No se ha asignado un mecanico';
 
 export type EstadoPedido = 'pendiente' | 'asignado' | 'en_curso' | 'finalizado' | 'cancelado';
@@ -65,6 +74,21 @@ export type Pedido = {
   createdAt?: number | object;
   estado?: EstadoPedido;
   direccionId?: string;
+  /** Solo existe cuando el técnico termina el servicio. */
+  Factura?: Factura;
+};
+
+/** Valores en texto, tal como los escribe la app de proveedores (sin formato de moneda). */
+export type Factura = {
+  valServ?: string;
+  valRep?: string;
+  valOtro?: string;
+  subTotal?: string;
+  iva?: string;
+  total?: string;
+  name?: string;
+  phone?: string;
+  dir?: string;
 };
 
 export type PedidoWithId = Pedido & { key: string };

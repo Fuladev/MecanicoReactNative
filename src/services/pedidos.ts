@@ -1,6 +1,6 @@
 import { onValue, push, ref, serverTimestamp, update } from 'firebase/database';
 import { db } from '../config/firebase';
-import { buildPedido, pedidoUpdates, sortPedidos } from '../domain/pedido';
+import { buildPedido, deletePedidoUpdates, pedidoUpdates, sortPedidos, type PedidoAction } from '../domain/pedido';
 import type { AddressWithId, PedidoWithId, UserProfile } from '../domain/schema';
 import type { Service } from '../domain/services';
 
@@ -30,4 +30,23 @@ export function subscribeMisPedidos(uid: string, cb: (list: PedidoWithId[]) => v
     },
     onError,
   );
+}
+
+/** Un pedido del historial del cliente, en vivo (el estado y la factura los escribe el técnico). */
+export function subscribePedido(
+  uid: string,
+  pedidoId: string,
+  cb: (p: PedidoWithId | null) => void,
+  onError?: (e: Error) => void,
+) {
+  return onValue(
+    ref(db, `Pedido/${uid}/${pedidoId}`),
+    (snap) => cb(snap.exists() ? { key: snap.key!, ...snap.val() } : null),
+    onError,
+  );
+}
+
+/** Cancela (si nadie lo ha tomado) o quita del historial (si ya terminó). Ver `pedidoAction`. */
+export async function borrarPedido(uid: string, pedidoId: string, action: PedidoAction) {
+  await update(ref(db), deletePedidoUpdates(uid, pedidoId, action));
 }

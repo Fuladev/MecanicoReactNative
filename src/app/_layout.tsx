@@ -43,7 +43,11 @@ function RootNavigator() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="servicio/[code]" options={{ title: 'Solicitar servicio' }} />
         <Stack.Screen name="otros" options={{ title: 'Otros servicios' }} />
+        <Stack.Screen name="pedido/[id]/index" options={{ title: 'Estado del pedido' }} />
+        <Stack.Screen name="pedido/[id]/factura" options={{ title: 'Factura' }} />
         <Stack.Screen name="direcciones/nueva" options={{ title: 'Nueva dirección', presentation: 'modal' }} />
+        <Stack.Screen name="direcciones/[id]" options={{ title: 'Editar dirección' }} />
+        <Stack.Screen name="perfil/index" options={{ title: 'Mi perfil' }} />
         <Stack.Screen name="perfil/editar" options={{ title: 'Editar perfil' }} />
       </Stack.Protected>
     </Stack>

@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useState } from 'react';
-import { Alert } from 'react-native';
+import { notify } from '../../dialogs';
 import { AppText, Button, ErrorText, Screen, TextField } from '../../components/ui';
 import { isValidEmail } from '../../domain/validation';
 import { authErrorMessage, loginWithEmail, resetPassword } from '../../services/auth';
@@ -30,7 +30,7 @@ export default function Login() {
     if (!isValidEmail(mail)) return setError('Escribe tu correo arriba para enviarte el enlace.');
     try {
       await resetPassword(mail);
-      Alert.alert('Revisa tu correo', 'Te enviamos un enlace para cambiar la contraseña.');
+      notify('Revisa tu correo', 'Te enviamos un enlace para cambiar la contraseña.');
     } catch (e) {
       setError(authErrorMessage(e));
     }

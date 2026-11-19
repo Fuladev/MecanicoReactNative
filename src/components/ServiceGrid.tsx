@@ -1,10 +1,14 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { router } from 'expo-router';
+import type { ComponentProps } from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 import type { Service } from '../domain/services';
 import { colors, spacing } from '../theme';
 import { AppText } from './ui';
 
-export function ServiceGrid({ services }: { services: Service[] }) {
+type ExtraTile = { label: string; icon: ComponentProps<typeof Ionicons>['name']; onPress: () => void };
+
+export function ServiceGrid({ services, extra }: { services: Service[]; extra?: ExtraTile }) {
   return (
     <View style={styles.grid}>
       {services.map((s) => (
@@ -14,7 +18,7 @@ export function ServiceGrid({ services }: { services: Service[] }) {
           accessibilityLabel={s.enabled ? s.label : `${s.label}, próximamente`}
           disabled={!s.enabled}
           onPress={() => router.push({ pathname: '/servicio/[code]', params: { code: s.code } })}
-          style={({ pressed }) => [styles.item, { opacity: !s.enabled ? 0.45 : pressed ? 0.8 : 1 }]}
+          style={({ pressed }) => [styles.item, { opacity: !s.enabled ? 0.45 : 1, transform: [{ scale: pressed ? 0.96 : 1 }] }]}
         >
           <View style={styles.iconWrap}>
             <Image source={s.icon} style={styles.icon} resizeMode="contain" />
@@ -25,6 +29,21 @@ export function ServiceGrid({ services }: { services: Service[] }) {
           {!s.enabled ? <AppText style={styles.soon}>Próximamente</AppText> : null}
         </Pressable>
       ))}
+      {extra ? (
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={extra.label}
+          onPress={extra.onPress}
+          style={({ pressed }) => [styles.item, { transform: [{ scale: pressed ? 0.96 : 1 }] }]}
+        >
+          <View style={[styles.iconWrap, { backgroundColor: colors.pink }]}>
+            <Ionicons name={extra.icon} size={34} color={colors.primary} />
+          </View>
+          <AppText weight="medium" style={styles.label} numberOfLines={2}>
+            {extra.label}
+          </AppText>
+        </Pressable>
+      ) : null}
     </View>
   );
 }

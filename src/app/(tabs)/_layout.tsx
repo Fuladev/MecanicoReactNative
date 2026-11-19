@@ -10,6 +10,7 @@ const icon = (focusedName: IconName, name: IconName) =>
     return <Ionicons name={focused ? focusedName : name} color={color as string} size={size} />;
   };
 
+/** Misma barra inferior que la app iOS: Hogar, Motor y Pedidos. El perfil se abre desde la cabecera. */
 export default function TabsLayout() {
   return (
     <Tabs
@@ -19,14 +20,13 @@ export default function TabsLayout() {
         tabBarLabelStyle: { fontFamily: fonts.medium, fontSize: 11 },
         headerTitleStyle: { fontFamily: fonts.bold },
         headerTintColor: colors.dark,
+        headerShown: false,
         sceneStyle: { backgroundColor: colors.background },
       }}
     >
-      <Tabs.Screen name="index" options={{ title: 'Hogar', headerShown: false, tabBarIcon: icon('home', 'home-outline') }} />
-      <Tabs.Screen name="motores" options={{ title: 'Motores', tabBarIcon: icon('car-sport', 'car-sport-outline') }} />
-      <Tabs.Screen name="pedidos" options={{ title: 'Mis pedidos', tabBarIcon: icon('receipt', 'receipt-outline') }} />
-      <Tabs.Screen name="direcciones" options={{ title: 'Direcciones', tabBarIcon: icon('location', 'location-outline') }} />
-      <Tabs.Screen name="perfil" options={{ title: 'Perfil', tabBarIcon: icon('person', 'person-outline') }} />
+      <Tabs.Screen name="index" options={{ title: 'Hogar', tabBarIcon: icon('home', 'home-outline') }} />
+      <Tabs.Screen name="motores" options={{ title: 'Motor', tabBarIcon: icon('car-sport', 'car-sport-outline') }} />
+      <Tabs.Screen name="pedidos" options={{ title: 'Pedidos', tabBarIcon: icon('time', 'time-outline') }} />
     </Tabs>
   );
 }

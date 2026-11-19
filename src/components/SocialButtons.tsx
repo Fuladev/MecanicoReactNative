@@ -1,6 +1,7 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { useEffect, useState } from 'react';
-import { Alert, Image } from 'react-native';
+import { Image } from 'react-native';
+import { notify } from '../dialogs';
 import { Button } from './ui';
 import { authErrorMessage, CancelledError, isAppleAvailable, loginWithApple, loginWithGoogle } from '../services/auth';
 
@@ -16,7 +17,7 @@ export function SocialButtons() {
     try {
       await (kind === 'google' ? loginWithGoogle() : loginWithApple());
     } catch (e) {
-      if (!(e instanceof CancelledError)) Alert.alert('No se pudo iniciar sesión', authErrorMessage(e));
+      if (!(e instanceof CancelledError)) notify('No se pudo iniciar sesión', authErrorMessage(e));
     } finally {
       setLoading(null);
     }
